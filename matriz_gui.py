@@ -87,5 +87,3 @@ resultado_label.pack(pady=30)
 # Executar janela
 janela.mainloop()
 
-if __name__ == "__main__":
-    matriz_label()
