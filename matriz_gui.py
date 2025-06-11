@@ -25,14 +25,23 @@ def calcular():
 
         # Exibir matriz digitada
         matriz_str = "\n".join(
-            ["[  " + "  ".join(f"{num:.2f}" for num in linha) + "  ]" for linha in matriz]
+            ["[  " + "  ".join(f"{int(num)}" if num.is_integer() else f"{num:.2f}".rstrip("0").rstrip(".")
+                               for num in linha) + "  ]"
+                                for linha in matriz]
         )
         matriz_label.config(text=f"Matriz Digitada:\n{matriz_str}")
 
         # Calcular determinante
         determinante = calcular_determinante_3x3(matriz)
+        formata_texto = (
+            f"Determinante: {int(determinante)}"
+            if determinante.is_integer()
+            else f"Determinante: {determinante:.4f}"
+        )
+
         resultado_label.config(
-            text=f"Determinante: {determinante:.4f}",
+            text= formata_texto,
+            # text=f"Determinante: {determinante:.4f}",
             font=font.Font(size=26, weight="bold"),
             fg="darkblue"
         )
@@ -77,3 +86,6 @@ resultado_label.pack(pady=30)
 
 # Executar janela
 janela.mainloop()
+
+if __name__ == "__main__":
+    matriz_label()
