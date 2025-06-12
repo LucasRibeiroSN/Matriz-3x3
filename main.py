@@ -1,66 +1,93 @@
-# Solicita os elementos da matriz ao usuario
-def matriz_3x3_usuario_input():
-    matriz = []
-    print("Digite os elementos da matriz 3x3: ")
+import tkinter as tk
+from tkinter import messagebox, font
 
+# Função para calcular o determinante de uma matriz 3x3
+def calcular_determinante_3x3(matriz):
+    a, b, c = matriz[0]
+    d, e, f = matriz[1]
+    g, h, i = matriz[2]
+
+    determinante = (a * (e * i - f * h) -
+                    b * (d * i - f * g) +
+                    c * (d * h - e * g))
+    return determinante
+
+def calcular():
+    try:
+        matriz = []
+        for i in range(3):
+            linha = []
+            for j in range(3):
+                valor = entradas[i][j].get()
+                linha.append(float(valor))
+            matriz.append(linha)
+
+        # Exibir matriz digitada
+        matriz_str = "\n".join(
+            ["[  " + "  ".join(f"{int(num)}" if num.is_integer() else f"{num:.2f}".rstrip("0").rstrip(".")
+                               for num in linha) + "  ]"
+             for linha in matriz]
+        )
+        matriz_label.config(text=f"Matriz Digitada:\n{matriz_str}")
+
+        # Calcular determinante
+        determinante = calcular_determinante_3x3(matriz)
+        formata_texto = (
+            f"Determinante: {int(determinante)}"
+            if determinante.is_integer()
+            else f"Determinante: {determinante:.4f}"
+        )
+
+        resultado_label.config(
+            text=formata_texto,
+            font=font.Font(size=26, weight="bold"),
+            fg="darkblue"
+        )
+
+    except ValueError:
+        messagebox.showerror("Erro", "Todos os campos devem conter números válidos.")
+
+def main():
+    global janela, entradas, matriz_label, resultado_label
+
+    janela = tk.Tk()
+    janela.title("Calculadora de Determinante 3x3")
+    janela.geometry("800x850")  # Tela grande
+
+    # Instrução
+    instrucoes = tk.Label(janela, text="Digite os elementos da matriz 3x3:", font=("Arial", 20))
+    instrucoes.pack(pady=20)
+
+    # Frame das entradas
+    entrada_frame = tk.Frame(janela)
+    entrada_frame.pack(pady=20)
+
+    # Entradas da matriz
+    entradas = []
     for i in range(3):
         linha = []
         for j in range(3):
-            while True:
-                try:
-                    elemento = float(input(f"Elemento [{i+1}][{j+1}]: "))
-                    linha.append(elemento)
-                    break
-                except ValueError:
-                    print("Entrada Invalida, Tente novamente.")
-        matriz.append(linha)
-    return matriz
+            entrada = tk.Entry(entrada_frame, width=10, font=("Arial", 24), justify="center", borderwidth=2, relief="solid")
+            entrada.grid(row=i, column=j, padx=15, pady=15)
+            linha.append(entrada)
+        entradas.append(linha)
 
-# exibe a matriz ja formatada
-def exibir_matriz(matriz, nome = "Matriz"):
-    if not matriz or not all(len(linha) == len(matriz[0]) for linha in matriz):
-        print(f"{nome} invalida para exibição")
-        return
+    # Botão para calcular
+    botao = tk.Button(janela, text="Calcular Determinante", font=("Arial", 18, "bold"),
+                      bg="#0066cc", fg="white", padx=20, pady=10, command=calcular)
+    botao.pack(pady=30)
 
-    print(f"{nome}:")
-    for linha in matriz:
-        print("[", end ="")
-        for elemento in linha:
-            print(f" {elemento:5.2f} ", end="")
-        print("]")
-    print()
+    # Exibição da matriz digitada
+    matriz_label = tk.Label(janela, text="", font=("Courier New", 20), justify="left")
+    matriz_label.pack(pady=10)
 
-# calcula a determinante da matriz
-def calcular_determinante_3x3(matriz):
-    if len(matriz) != 3 or any(len(linha) != 3 for linha in matriz):
-        raise ValueError("Matriz invalida para calcular o determinante, tem que ser uma matriz 3x3.")
+    # Resultado do determinante
+    resultado_label = tk.Label(janela, text="Determinante:", font=("Arial", 22))
+    resultado_label.pack(pady=30)
 
-    a,b,c = matriz[0]
-    d,e,f = matriz[1]
-    g,h,i = matriz[2]
+    # Inicia o loop principal da interface
+    janela.mainloop()
 
-    determinate = (a * (e * i - f * h) -
-                   b * (d * i - f * g) +
-                   c * (d * h - e * g))
-    return determinate
-
-# Função principal para executar o programa
-def main():
-    print("Calculadora de Determinante de Matriz 3x3")
-    print("=====================================")
-
-    # Obtem a matriz do usuario
-    matriz_usuario = matriz_3x3_usuario_input()
-
-    # exibe a matriz do usuario
-    exibir_matriz(matriz_usuario, "Matriz do Usuario")
-
-    # calcula e exibe o determinante da matriz
-    try:
-        det = calcular_determinante_3x3(matriz_usuario)
-        print(f"O determinante da matriz é: {det:.4f}")
-    except ValueError as e:
-        print(e)
-
+# Garantir que a execução só ocorra quando rodado diretamente
 if __name__ == "__main__":
     main()
