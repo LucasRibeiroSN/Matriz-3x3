@@ -6,6 +6,12 @@ Uma aplicação gráfica em Python para calcular o determinante de matrizes 3x3 
 
 Este projeto implementa uma calculadora visual para determinantes de matrizes 3x3. A aplicação possui uma interface gráfica amigável onde o usuário pode inserir os valores da matriz e obter o resultado do determinante instantaneamente.
 
+## 🚀 Acesso ao Vivo
+
+Você pode visualizar o projeto em funcionamento no seguinte link:
+
+### ➡️ [**Visitar o Portfólio**](https://lucas-ribeiro.vercel.app/)
+
 ## ⚡ Funcionalidades
 
 - Interface gráfica intuitiva com campos de entrada para matriz 3x3
